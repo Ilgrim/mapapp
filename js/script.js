@@ -191,4 +191,20 @@ $(document).ready(function () {
         delete link;
     });
 
+    
+    /* Importar datos do arquivo */
+    $('#import').change(function(evt){
+        files = evt.target.files;
+        var reader = new FileReader();
+        
+        reader.onload = (function (theFile){
+            return function (e){
+                contido = e.target.result;
+                console.log(contido);
+            };
+        })(files[0]);
+        
+        reader.readAsText(files[0]);
+    });
+    
 });
