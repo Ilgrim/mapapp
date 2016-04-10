@@ -1,0 +1,97 @@
+<!-- Dmahugh scaffolding for web apps - modified version of Boostrap starter file -->
+<!-- originally downloaded from http://getbootstrap.com/getting-started/#template -->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <!-- These 3 meta tags *must* come first in the head -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="icon" href="image/favicon.ico">
+
+    <title>MAPAPP</title>
+
+    <!-- Bootstrap core CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
+
+    <!-- Bootstrap theme -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap-theme.min.css">
+
+    <!-- custom CSS styles for this app-->
+    <link href="css/style.css" rel="stylesheet">
+
+    <!-- provide IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+        <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+</head>
+
+<body role="document">
+
+    <!-- Fixed navbar -->
+    <nav class="navbar navbar-inverse navbar-fixed-top">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+                    <span>Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+
+                <a class="navbar-brand" href="#">MAPAPP</a>
+
+            </div>
+            <div id="navbar" class="navbar-collapse collapse">
+                <ul class="nav navbar-nav">
+                    <li class="active"><a href="#">Home</a></li>
+                    <li><a href="#about">About</a></li>
+                    <li><a href="#contact">Contact</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container theme-showcase" role="main">
+
+
+        <!-- <div id="jqueryVersion"></div> -->
+
+        <input type="file" name="datafile" size="40" id="input_add_image">
+        <div id="export" class="pull-right" style="cursor:pointer">Exportar</div>
+
+        <div class="row">
+            <div id="current_map" class="get_coord col-md-8"></div>
+
+            <div id="datos" class="col-md-4">
+                <input type="hidden" name="point" id="point_input" value="">
+                <label>Nombre:</label>
+                <br>
+                <input type="text" id="nombre"></input>
+                <br>
+                <label>Notas:</label>
+                <br>
+                <textarea id="notas" rows="7" cols="50"></textarea>
+                <input type="submit" id="point_submit">
+            </div>
+        </div>
+
+
+    </div>
+
+    <!-- external JavaScript at end of document for faster page load -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/holder/2.6.0/holder.min.js/"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+    <!-- custom JavaScript for this app -->
+    <script src="js/script.js"></script>
+
+</body>
+
+</html>
