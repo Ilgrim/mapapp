@@ -55,13 +55,13 @@ $(document).ready(function () {
 
             //axustando
             var mapwidth = $("#map").width();
-            var x = (x - mapwidth) - 12;
-            var y = y - 12;
+            var x = parseInt((x - mapwidth) - 12);
+            var y = parseInt(y - 12);
 
-            console.log('NOVO x: ' + x + ', y: ' + y);                        
+            //console.log('NOVO x: ' + x + ', y: ' + y);                        
 
             /* agregamos un point */
-            $("#current_map").append('<img class="point" src="image/point.png" style="z-index: 99; transform: translate(' + x + 'px, ' + y + 'px);">')
+            $("#current_map").append('<img class="point" id="'+x+'point'+y+'" src="image/point.png" style="z-index: 99; transform: translate(' + x + 'px, ' + y + 'px);">')
         }
 
     });
@@ -134,6 +134,45 @@ $(document).ready(function () {
         guardar_punto();
     });
 
+    /* Borrar punto */
+    $('#point_delete').on("click", function(){
+        var x = $('#point_input').val().split(',')[0];
+        var y = $('#point_input').val().split(',')[1];
+
+        //console.log(Datos.puntos);
+            //buscar
+            var encontrado = false;
+            var posicion;
+            for (var i = 0; i < Datos.puntos.length; i++) {
+                if (Datos.puntos[i].x == x && Datos.puntos[i].y == y) {
+                    //console.log("existe");
+                    encontrado = true;
+                    posicion = i;
+                    break;
+                } else {
+                    //console.log("no existe");
+                    encontrado = false;
+                }
+            }
+
+            if (encontrado == true) {
+                if (posicion > -1) {
+                    var coord = $("#point_input").val();
+                    var x = coord.split(',')[0];
+                    var y = coord.split(',')[1];
+                    id = x+'point'+y;
+ 
+                    //console.log(Datos.puntos);
+                    Datos.puntos.splice(posicion, 1);
+                    $('#'+id).remove();
+                    //console.log(Datos.puntos);
+                }
+
+
+            }; 
+
+    });
+
 
     /* agrega a imaxen en base64 */
     function handleFileSelect(evt) {
@@ -170,6 +209,7 @@ $(document).ready(function () {
 
     /* Exportar JSON */
     $('#export').on("click", function (e) {
+        //Non funciona en dispositivos móviles :/
         stringy = JSON.stringify(Datos);
         var blob = new Blob([stringy], {
             type: "text/json"
@@ -183,9 +223,14 @@ $(document).ready(function () {
         link.download = 'datos.json'; // nome do arquivo
         link.href = uri;
 
+        // Trapi para móviles
+        //var clickEvent = document.createEvent('MouseEvent');
+        //clickEvent.initEvent('click', true, true);
+
         // Agregase ó DOM e lanzase o evento click
         document.body.appendChild(link);
-        link.click();
+        link.click();         
+        //link.dispatchEvent(clickEvent); //continuacion do trapi
 
         // Limpase o DOM
         document.body.removeChild(link);
@@ -211,7 +256,7 @@ $(document).ready(function () {
                 
                 //append points
                 $.each(Datos.puntos, function(indice, valor){                    
-                    $("#current_map").append('<img class="point" src="image/point.png" style="z-index: 99; transform: translate(' + valor.x + 'px, ' + valor.y + 'px);">');                    
+                    $("#current_map").append('<img class="point" id="'+valor.x+'point'+valor.y+'" src="image/point.png" style="z-index: 99; transform: translate(' + valor.x + 'px, ' + valor.y + 'px);">');                   
                 });
                 
                 
