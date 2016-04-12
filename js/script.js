@@ -19,7 +19,8 @@ $(document).ready(function () {
             var y = parseInt($(this).css('transform').split(',')[5]);
             var coord = x + "," + y;
             //console.log('POINT x: ' + x + ', y: ' + y);
-
+            //console.log(Datos.puntos);
+            
             $('#datos').show();
             $('#point_input').val(coord);
 
@@ -28,11 +29,11 @@ $(document).ready(function () {
             $("#notas").val('');
 
             //buscar
-            for (var i = 0; i < Puntos.length; i++) {
-                if (Puntos[i].x == x && Puntos[i].y == y) {
+            for (var i = 0; i < Datos.puntos.length; i++) {
+                if (Datos.puntos[i].x == x && Datos.puntos[i].y == y) {
                     //console.log("existe");
-                    $("#nombre").val(Puntos[i].nombre);
-                    $("#notas").val(Puntos[i].notas);
+                    $("#nombre").val(Datos.puntos[i].nombre);
+                    $("#notas").val(Datos.puntos[i].notas);
                     break;
                 } else {
                     //console.log("no existe");
@@ -57,7 +58,7 @@ $(document).ready(function () {
             var x = (x - mapwidth) - 12;
             var y = y - 12;
 
-            //console.log('NOVO x: ' + x + ', y: ' + y);                        
+            console.log('NOVO x: ' + x + ', y: ' + y);                        
 
             /* agregamos un point */
             $("#current_map").append('<img class="point" src="image/point.png" style="z-index: 99; transform: translate(' + x + 'px, ' + y + 'px);">')
@@ -86,14 +87,14 @@ $(document).ready(function () {
         Punto.nombre = nombre;
         Punto.notas = notas;
 
-        if (Puntos.length == 0) {
-            Puntos.push(Punto);
+        if (Datos.puntos.length == 0) {
+            Datos.puntos.push(Punto);
         } else {
             //buscar
             var encontrado = false;
             var posicion;
-            for (var i = 0; i < Puntos.length; i++) {
-                if (Puntos[i].x == x && Puntos[i].y == y) {
+            for (var i = 0; i < Datos.puntos.length; i++) {
+                if (Datos.puntos[i].x == x && Datos.puntos[i].y == y) {
                     //console.log("existe");
                     encontrado = true;
                     posicion = i;
@@ -111,14 +112,14 @@ $(document).ready(function () {
                 var nombre = $("#nombre").val();
                 var notas = $("#notas").val();
 
-                Puntos[posicion].x = x;
-                Puntos[posicion].y = y
-                Puntos[posicion].nombre = nombre;
-                Puntos[posicion].notas = notas;
+                Datos.puntos[posicion].x = x;
+                Datos.puntos[posicion].y = y
+                Datos.puntos[posicion].nombre = nombre;
+                Datos.puntos[posicion].notas = notas;
 
             } else {
                 //console.log("insert");
-                Puntos.push(Punto);
+                Datos.puntos.push(Punto);
             }
 
         }
@@ -200,7 +201,23 @@ $(document).ready(function () {
         reader.onload = (function (theFile){
             return function (e){
                 contido = e.target.result;
-                console.log(contido);
+                //console.log(contido);
+                
+                //parse from contido and draw
+                Datos = JSON.parse(contido);
+                
+                //append map
+                $("#current_map").append(['<img id="map" src="', Datos.imagen, '" title="', escape(theFile.name), '" style="width:600px;"/>'].join(''));
+                
+                //append points
+                $.each(Datos.puntos, function(indice, valor){                    
+                    $("#current_map").append('<img class="point" src="image/point.png" style="z-index: 99; transform: translate(' + valor.x + 'px, ' + valor.y + 'px);">');                    
+                });
+                
+                
+                
+                
+                
             };
         })(files[0]);
         
