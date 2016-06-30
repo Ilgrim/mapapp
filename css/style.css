@@ -8,10 +8,6 @@ body {
    width:150px;
 }
 
-.navbar-brand {
-	margin-top:-7px; /* vertically centers logo in navbar */
-}
-
 
 .get_coord {
     position: relative;

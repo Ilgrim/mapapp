@@ -8,6 +8,50 @@ $(document).ready(function () {
 
     $('#datos').hide();
 
+    $('#btn_nuevo').on('click', function(ev){
+        $('#start').hide();
+        $('#input_add_image').show(200, function(){
+            console.log('change');
+            document.getElementById('input_add_image').addEventListener('change', handleFileSelect, false);
+        });
+
+    });
+
+    $('#btn_importar').on('click', function(ev){
+        $('#start').hide();
+        $('#importar').show(200, function(){
+            //document.getElementById('import').addEventListener('change', handleFileSelect, false);
+        });
+    });
+
+    $('#btn_ejemplo').on('click', function(ev){
+        $('#start').hide();
+        //////////////////////////////////////////////////////////////
+
+
+            //parse from contido and draw
+            $.getJSON( "ejemplo.json", function( data ) {
+                //console.log(data);
+                Puntos = data.puntos;
+                Datos.imagen = data.imagen;
+                Datos.puntos = Puntos;
+
+                //append map
+                $("#current_map").append(['<img id="map" src="', data.imagen, '" title="Ejemplo" style="width:600px;"/>'].join(''));
+
+                //append points
+                $.each(data.puntos, function(indice, valor){
+                    $("#current_map").append('<img class="point" id="'+valor.x+'point'+valor.y+'" src="image/point.png" style="position:absolute;z-index: 99; top: '+valor.y+'px; left: '+valor.x+'px">');
+                });
+
+
+                $('#export').show();
+            });
+             
+        /////////////////////////////////////////////////////////////
+    });
+    
+
     $('.get_coord').on('click', 'img', function (ev) {
 
         /* comprobamos si esto é un point ou é novo */
@@ -15,8 +59,8 @@ $(document).ready(function () {
             /* esto é un point */
 
             //recollemos coord
-            var x = parseInt($(this).css('transform').split(',')[4]);
-            var y = parseInt($(this).css('transform').split(',')[5]);
+            var x = parseInt($(this).css('left'));
+            var y = parseInt($(this).css('top'));
             var coord = x + "," + y;
             //console.log('POINT x: ' + x + ', y: ' + y);
             //console.log(Datos.puntos);
@@ -42,26 +86,17 @@ $(document).ready(function () {
             }
 
         } else {
-            /* é novo */
+            /* novo */ 
             $('#datos').hide(); //escondense os input            
 
-            /* obtemos coordenadas */
-            var $div = $(ev.target);
-            var $display = $div.find('.display');
-
-            var offset = $div.offset();
-            var x = ev.clientX - offset.left;
-            var y = ev.clientY - offset.top;
-
-            //axustando
             var mapwidth = $("#map").width();
-            var x = parseInt((x - mapwidth) - 12);
-            var y = parseInt(y - 12);
+            var x = parseInt(ev.offsetX + 2 );
+            var y = parseInt(ev.offsetY - 25);
 
-            //console.log('NOVO x: ' + x + ', y: ' + y);                        
+            console.log('NOVO x: ' + x + ', y: ' + y);                        
 
             /* agregamos un point */
-            $("#current_map").append('<img class="point" id="'+x+'point'+y+'" src="image/point.png" style="z-index: 99; transform: translate(' + x + 'px, ' + y + 'px);">')
+            $("#current_map").append('<img class="point" id="'+x+'point'+y+'" src="image/point.png" style="position:absolute;z-index: 99; top: '+y+'px; left: '+x+'px">')
         }
 
     });
@@ -170,12 +205,14 @@ $(document).ready(function () {
 
 
             }; 
+        $('#datos').hide();
 
     });
 
 
     /* agrega a imaxen en base64 */
     function handleFileSelect(evt) {
+        $('#export').show();
         $("#current_map").empty();
 
         var files = evt.target.files; // FileList object
@@ -193,9 +230,11 @@ $(document).ready(function () {
             // Closure to capture the file information.
             reader.onload = (function (theFile) {
                 return function (e) {
-                    $("#current_map").append(['<img id="map" src="', e.target.result, '" title="', escape(theFile.name), '" style="width:600px;"/>'].join(''));
+                    $("#current_map").append(['<img id="map" class="get_coord" src="', e.target.result, '" title="', escape(theFile.name), '" style="position:relative; width:600px;"/>'].join(''));
                     Datos.imagen = e.target.result;
-                    //console.log(Datos); 
+                    //console.log(Datos);
+                    $('#input_add_image').hide();
+                    $('#importar').css("display", "none"); 
                 };
             })(f);
 
@@ -204,25 +243,26 @@ $(document).ready(function () {
         }
     };
 
-    document.getElementById('input_add_image').addEventListener('change', handleFileSelect, false);
+    //document.getElementById('input_add_image').addEventListener('change', handleFileSelect, false); //moveuse para o show arriba de todo
 
 
     /* Exportar JSON */
-    $('#export').on("click", function (e) {
+    $(document).on('click touchstart', '.export_btn', function() {
+    //$('#export').on("click touchstart", function(){
         //Non funciona en dispositivos móviles :/
         stringy = JSON.stringify(Datos);
         var blob = new Blob([stringy], {
             type: "text/json"
         });
-
+        console.log(blob); //
         // Construese a uri
         var uri = URL.createObjectURL(blob);
-
+        console.log(uri); //
         // Construese o elemento <a>
         var link = document.createElement("a");
         link.download = 'datos.json'; // nome do arquivo
         link.href = uri;
-
+        console.log(link);//
         // Agregase ó DOM e lanzase o evento click
         document.body.appendChild(link);
         //link.click();         
@@ -230,6 +270,7 @@ $(document).ready(function () {
 
         // Limpase o DOM
         document.body.removeChild(link);
+
         delete link;
     });
 
@@ -252,11 +293,13 @@ $(document).ready(function () {
                 
                 //append points
                 $.each(Datos.puntos, function(indice, valor){                    
-                    $("#current_map").append('<img class="point" id="'+valor.x+'point'+valor.y+'" src="image/point.png" style="z-index: 99; transform: translate(' + valor.x + 'px, ' + valor.y + 'px);">');                   
+                    //$("#current_map").append('<img class="point" id="'+valor.x+'point'+valor.y+'" src="image/point.png" style="z-index: 99; transform: translate(' + valor.x + 'px, ' + valor.y + 'px);">');
+                    $("#current_map").append('<img class="point" id="'+valor.x+'point'+valor.y+'" src="image/point.png" style="position:absolute;z-index: 99; top: '+valor.y+'px; left: '+valor.x+'px">');
                 });
                 
                 
-                
+                $('#importar').hide();
+                $('#export').show();       
                 
                 
             };
@@ -265,6 +308,8 @@ $(document).ready(function () {
         reader.readAsText(files[0]);
     });
 
+
+    /* Cargar exemplo */
 
 
 /**
@@ -325,5 +370,4 @@ function fireEvent(node, eventName) {
 };
 
 
-    
 });

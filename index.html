@@ -11,9 +11,10 @@
 
     <meta name="description" content="">
     <meta name="author" content="">
-    <link rel="icon" href="image/favicon.ico">
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
+    <link rel="icon" href="/favicon.ico" type="image/x-icon">
 
-    <title>MAPAPP</title>
+    <title>sextante</title>
 
     <!-- Bootstrap core CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
@@ -23,6 +24,7 @@
 
     <!-- custom CSS styles for this app-->
     <link href="css/style.css" rel="stylesheet">
+    <link href="../css/landing-page.css" rel="stylesheet">
 
     <!-- provide IE8 support of HTML5 elements and media queries -->
     <!--[if lt IE 9]>
@@ -35,46 +37,68 @@
 <body role="document">
 
     <!-- Fixed navbar -->
-    <nav class="navbar navbar-inverse navbar-fixed-top">
-        <div class="container">
+    <nav class="navbar navbar-default navbar-fixed-top topnav" role="navigation">
+        <div class="container topnav">
+            <!-- Brand and toggle get grouped for better mobile display -->
             <div class="navbar-header">
-                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
-                    <span>Toggle navigation</span>
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                    <span class="sr-only">Toggle navigation</span>
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-
-                <a class="navbar-brand" href="#">MAPAPP</a>
-
+                <a class="navbar-brand topnav" href="#">sextante</a>
             </div>
-            <div id="navbar" class="navbar-collapse collapse">
-                <ul class="nav navbar-nav">
-                    <li class="active"><a href="#">Home</a></li>
-                    <li><a href="#about">About</a></li>
-                    <li><a href="#contact">Contact</a></li>
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/">Inicio</a>
+                    </li>
+                    <li>
+                        <a href="/#about">Sobre esto</a>
+                    </li>
+                    <li>
+                        <a href="/#contact">Contacto</a>
+                    </li>
                 </ul>
             </div>
+            <!-- /.navbar-collapse -->
         </div>
+        <!-- /.container -->
     </nav>
 
     <div class="container theme-showcase" role="main">
 
 
         <!-- <div id="jqueryVersion"></div> -->
+        <div id="start" class="row" style="text-align:center;">
+            <div class="well col-md-4" style="float: none;margin: 0 auto;">
+                <p>Crea un nuevo mapa:</p>
+                <button id="btn_nuevo" type="button" class="btn btn-primary">Nuevo</button>
+                <hr>
+                <p class="clearfix">Importa uno ya creado:</p> 
+                <button id="btn_importar" type="button" class="btn btn-primary">Importar</button>
+                <hr>
+                <p class="clearfix">Usa un ejemplo:<p>
+                <button id="btn_ejemplo" type="button" class="btn btn-primary">Ejemplo</button>
+            </div>
+        </div>
 
-        <input type="file" name="datafile" size="40" id="input_add_image">
-        <button id="export" class="pull-right" style="cursor:pointer">Exportar</button>
-        <div class="pull-right">
+        <input type="file" name="datafile" size="40" id="input_add_image" style="display:none;">
+        <div id="export" class="pull-right" style="display:none;">
+            <button class="btn btn-primary export_btn" style="position: relative; z-index: 100;">Exportar</button>
+        </div>
+        <div id="importar" style="display:none;">
             <label>Importar</label>
             <input type="file" name="jsonfile" size="40" id="import">
         </div>            
         
 
-        <div class="row">
+        <div class="row" id="map">
             <div id="current_map" class="get_coord col-md-8"></div>
 
-            <div id="datos" class="col-md-4">
+            <div id="datos" class="col-md-4" style="display:none;">
                 <input type="hidden" name="point" id="point_input" value="">
                 <label>Nombre:</label>
                 <br>
@@ -93,12 +117,27 @@
 
     <!-- external JavaScript at end of document for faster page load -->
     <!--    <script src="https://cdnjs.cloudflare.com/ajax/libs/holder/2.6.0/holder.min.js/"></script>-->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
-    <script src="http://code.jquery.com/ui/1.8.21/jquery-ui.min.js"></script>
-    <script src="js/jquery.ui.touch-punch.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+    <!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script> -->
+    <!--<script src="http://code.jquery.com/ui/1.8.21/jquery-ui.min.js"></script>-->
+    <!--<script src="js/jquery.ui.touch-punch.min.js"></script>-->
+    <!-- <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script> -->
+    <script src="/js/jquery.js"></script>
+    <script src="/js/bootstrap.min.js"></script>
     <!-- custom JavaScript for this app -->
     <script src="js/script.js"></script>
+
+
+    <!-- Analytics -->
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-79359945-1', 'auto');
+  ga('send', 'pageview');
+
+</script>
 
 </body>
 
